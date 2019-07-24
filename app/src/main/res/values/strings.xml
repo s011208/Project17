@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Project 17</string>
+
+    <string name="activity_main_search_hint">Search user name here…</string>
+    <string name="activity_main_search_failed_toast">"Failed to search users"</string>
+    <string name="activity_main_search_empty_result">"Cannot find any results"</string>
+    <string name="epoxy_model_github_user_name">User name</string>
+
+</resources>
