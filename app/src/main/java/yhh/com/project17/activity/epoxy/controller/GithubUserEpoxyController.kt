@@ -1,40 +1,35 @@
 package yhh.com.project17.activity.epoxy.controller
 
-import com.airbnb.epoxy.Typed2EpoxyController
-import io.reactivex.subjects.PublishSubject
+import com.airbnb.epoxy.Typed3EpoxyController
 import timber.log.Timber
 import yhh.com.project17.activity.epoxy.model.emptyResult
 import yhh.com.project17.activity.epoxy.model.githubUser
 import yhh.com.project17.activity.epoxy.model.progressBar
-import yhh.com.repository.entity.GithubUserEntityWrapper
+import yhh.com.repository.entity.GithubUserEntity
 
-class GithubUserEpoxyController : Typed2EpoxyController<Boolean, GithubUserEntityWrapper>() {
+class GithubUserEpoxyController : Typed3EpoxyController<Boolean, Boolean, List<GithubUserEntity>>() {
 
-    internal val onLoadMoreIntent = PublishSubject.create<Unit>()
+    override fun buildModels(initialized: Boolean, isLoadingMore: Boolean, githubUsers: List<GithubUserEntity>) {
+        Timber.v("user list size: ${githubUsers.size}, initialized: $initialized, isLoadingMore: $isLoadingMore")
 
-    override fun buildModels(initialized: Boolean, wrapper: GithubUserEntityWrapper) {
-        if (initialized) {
-            Timber.v("user list size: ${wrapper.githubUsers.size}")
-
-            if (wrapper.githubUsers.isEmpty()) {
+        if (githubUsers.isEmpty()) {
+            if (initialized) {
                 emptyResult {
                     id("emptyResult")
                 }
-            } else {
-
-                wrapper.githubUsers.forEach { userInfo ->
-                    githubUser {
-                        userName(userInfo.userName)
-                        avatarUrl(userInfo.avatarUrl)
-                        id(userInfo.id)
-                    }
+            }
+        } else {
+            githubUsers.forEach { userInfo ->
+                githubUser {
+                    userName(userInfo.userName)
+                    avatarUrl(userInfo.avatarUrl)
+                    id(userInfo.id)
                 }
+            }
 
-                if (wrapper.totalCount > wrapper.githubUsers.size) {
-                    progressBar {
-                        id("ProgressBarEpoxyModel_")
-                        loadMoreIntent(onLoadMoreIntent)
-                    }
+            if (isLoadingMore) {
+                progressBar {
+                    id("progressBar")
                 }
             }
         }

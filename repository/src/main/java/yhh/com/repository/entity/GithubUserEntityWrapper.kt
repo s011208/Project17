@@ -13,6 +13,6 @@ data class GithubUserEntityWrapper (
     val incompleteResults: Boolean = false,
 
     @field: [SerializedName("items")]
-    val githubUsers: List<GithubUserEntity> = ArrayList()
+    val githubUsers: ArrayList<GithubUserEntity> = ArrayList()
 
 )

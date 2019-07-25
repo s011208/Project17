@@ -8,10 +8,19 @@ import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import yhh.com.project17.activity.MainFragment
 import yhh.com.project17.external.mvrx.MvRxViewModel
+import yhh.com.repository.entity.GithubUserEntity
 import yhh.com.repository.entity.GithubUserEntityWrapper
 import yhh.com.repository.repository.GithubRepository
+import java.util.concurrent.TimeUnit
 
-data class MainFragmentState(val githubUserEntityWrapperAsync: Async<GithubUserEntityWrapper> = Uninitialized): MvRxState
+data class MainFragmentState(
+    val keyword: String = "",
+    val page: Int = 1,
+    val isLoadingMore: Boolean = false,
+    val githubUserEntityWrapperAsync: Async<GithubUserEntityWrapper> = Uninitialized,
+    val totalCount: Int = 0,
+    val users: List<GithubUserEntity> = listOf()
+) : MvRxState
 
 class MainFragmentViewModel @AssistedInject constructor(
     @Assisted initialState: MainFragmentState,
@@ -32,7 +41,7 @@ class MainFragmentViewModel @AssistedInject constructor(
                 .viewModelFactory.create(state)
         }
 
-        private const val NUMBER_OF_ITEM_PER_PAGE = 100
+        private const val NUMBER_OF_ITEM_PER_PAGE = 30
     }
 
     private var disposable: Disposable? = null
@@ -42,23 +51,68 @@ class MainFragmentViewModel @AssistedInject constructor(
         disposable?.dispose()
     }
 
-    fun search(key: String, page: Int = 1) {
-        if (disposable?.isDisposed == false) {
-            disposable?.dispose()
+    fun search(keyword: String, page: Int = 1) {
+        withState { currentState ->
+            if (currentState.githubUserEntityWrapperAsync is Loading) {
+                Timber.v("force cancel ${currentState.keyword}")
+                disposable?.dispose()
+            }
+
+            if (keyword.isBlank()) {
+                setState {
+                    copy(
+                        githubUserEntityWrapperAsync = Uninitialized,
+                        keyword = keyword,
+                        page = page,
+                        isLoadingMore = false,
+                        users = ArrayList(),
+                        totalCount = 0
+                    )
+                }
+                return@withState
+            }
+            search(keyword, page, NUMBER_OF_ITEM_PER_PAGE)
         }
-        if (key.isBlank()) {
-            setState { copy(githubUserEntityWrapperAsync = Uninitialized) }
-            return
+    }
+
+    private fun search(keyword: String, page: Int, itemsPerPage: Int, isLoadingMore: Boolean = false) {
+        if (!isLoadingMore) {
+            setState { copy(users = listOf(), totalCount = 0) }
         }
-        disposable = githubRepository.searchUsers(key, page, NUMBER_OF_ITEM_PER_PAGE)
+
+        disposable = githubRepository.searchUsers(keyword, page, itemsPerPage)
+            .timeout(10, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .doOnError { Timber.w(it, "failed to search users") }
             .execute {
-                copy(githubUserEntityWrapperAsync = it)
+                val list: List<GithubUserEntity>
+                val totalCount: Int
+                if (it is Success && it.invoke() != null) {
+                    list = this.users + it.invoke()!!.githubUsers
+                    totalCount = it.invoke()!!.totalCount
+                } else {
+                    list = this.users
+                    totalCount = this.totalCount
+                }
+                return@execute copy(
+                    githubUserEntityWrapperAsync = it,
+                    keyword = keyword,
+                    page = if (it is Fail) page - 1 else page,
+                    isLoadingMore = if (it is Success || it is Fail || it is Uninitialized) false else isLoadingMore,
+                    users = list,
+                    totalCount = totalCount
+                )
             }
     }
 
     fun loadMore() {
-        Timber.v("loadMore")
+        withState {
+            Timber.v("loadMore, ${it.totalCount}")
+            if (it.totalCount > it.page * NUMBER_OF_ITEM_PER_PAGE) {
+                search(it.keyword, it.page + 1, NUMBER_OF_ITEM_PER_PAGE, true)
+            } else {
+                setState { copy(isLoadingMore = false) }
+            }
+        }
     }
 }

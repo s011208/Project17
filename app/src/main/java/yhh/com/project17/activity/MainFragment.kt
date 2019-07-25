@@ -13,6 +13,7 @@ import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_main.*
+import timber.log.Timber
 import yhh.com.project17.R
 import yhh.com.project17.activity.epoxy.controller.GithubUserEpoxyController
 import yhh.com.project17.activity.mvrx.viewmodel.MainFragmentViewModel
@@ -65,8 +66,8 @@ class MainFragment : BaseMvRxFragment() {
             .throttleFirst(500, TimeUnit.MICROSECONDS)
             .subscribe { viewModel.search(it.editable?.toString() ?: "") }
 
-        compositeDisposable += epoxyController
-            .onLoadMoreIntent
+        compositeDisposable += usersRecyclerView
+            .loadMoreIntent
             .subscribe { viewModel.loadMore() }
     }
 
@@ -79,27 +80,41 @@ class MainFragment : BaseMvRxFragment() {
     override fun invalidate() {
         withState(viewModel) {
 
-            if (it.githubUserEntityWrapperAsync is Loading) {
+            if (it.githubUserEntityWrapperAsync is Loading && !it.isLoadingMore) {
                 progressBar.visibility = View.VISIBLE
             } else {
                 progressBar.visibility = View.INVISIBLE
             }
 
-            when {
-                it.githubUserEntityWrapperAsync is Success -> epoxyController.setData(
+            when (it.githubUserEntityWrapperAsync) {
+                is Success -> epoxyController.setData(
                     true,
-                    it.githubUserEntityWrapperAsync.invoke()
+                    it.isLoadingMore,
+                    it.users
                 )
-                it.githubUserEntityWrapperAsync is Fail -> {
-                    Toast.makeText(requireContext(), R.string.activity_main_search_failed_toast, Toast.LENGTH_LONG)
+                is Fail -> {
+                    Toast
+                        .makeText(requireContext(), R.string.activity_main_search_failed_toast, Toast.LENGTH_LONG)
                         .show()
-                    epoxyController.setData(false, GithubUserEntityWrapper())
+                    epoxyController.setData(false, it.isLoadingMore, it.users)
                 }
-                it.githubUserEntityWrapperAsync is Uninitialized -> epoxyController.setData(
-                    false,
-                    GithubUserEntityWrapper()
-                )
+                is Uninitialized ->
+                    epoxyController.setData(
+                        false,
+                        it.isLoadingMore,
+                        ArrayList()
+                    )
+                is Loading -> {
+                    epoxyController.setData(
+                        false,
+                        it.isLoadingMore,
+                        it.users
+                    )
+                }
             }
+
+            usersRecyclerView.isLoading = it.isLoadingMore
+            Timber.w("set isLoading to ${it.isLoadingMore}")
         }
     }
 }

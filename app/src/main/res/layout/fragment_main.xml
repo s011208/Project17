@@ -24,7 +24,7 @@
                 android:autofillHints="username"
                 tools:targetApi="o"/>
 
-        <androidx.recyclerview.widget.RecyclerView
+        <yhh.com.project17.util.view.EndlessRecyclerView
                 android:id="@+id/usersRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
