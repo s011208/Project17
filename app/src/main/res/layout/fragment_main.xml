@@ -26,6 +26,7 @@
 
         <yhh.com.project17.util.view.EndlessRecyclerView
                 android:id="@+id/usersRecyclerView"
+                android:scrollbars="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
     </LinearLayout>
