@@ -18,7 +18,6 @@ import yhh.com.project17.R
 import yhh.com.project17.activity.epoxy.controller.GithubUserEpoxyController
 import yhh.com.project17.activity.mvrx.viewmodel.MainFragmentViewModel
 import yhh.com.project17.util.view.SpacesItemDecoration
-import yhh.com.repository.entity.GithubUserEntityWrapper
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -114,7 +113,6 @@ class MainFragment : BaseMvRxFragment() {
             }
 
             usersRecyclerView.isLoading = it.isLoadingMore
-            Timber.w("set isLoading to ${it.isLoadingMore}")
         }
     }
 }

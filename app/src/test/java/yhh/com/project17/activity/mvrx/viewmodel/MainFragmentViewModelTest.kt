@@ -21,7 +21,7 @@ import yhh.com.repository.repository.GithubRepository
 import yhh.com.repository.util.RxImmediateSchedulerRule
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [Build.VERSION_CODES.O])
+@Config(sdk = [Build.VERSION_CODES.O], manifest = Config.NONE)
 class MainFragmentViewModelTest {
 
     @Rule
