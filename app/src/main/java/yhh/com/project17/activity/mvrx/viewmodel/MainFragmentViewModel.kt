@@ -1,5 +1,6 @@
 package yhh.com.project17.activity.mvrx.viewmodel
 
+import androidx.annotation.VisibleForTesting
 import com.airbnb.mvrx.*
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
@@ -75,7 +76,8 @@ class MainFragmentViewModel @AssistedInject constructor(
         }
     }
 
-    private fun search(keyword: String, page: Int, itemsPerPage: Int, isLoadingMore: Boolean = false) {
+    @VisibleForTesting
+    fun search(keyword: String, page: Int, itemsPerPage: Int, isLoadingMore: Boolean = false) {
         if (!isLoadingMore) {
             setState { copy(users = listOf(), totalCount = 0) }
         }

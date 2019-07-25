@@ -26,7 +26,6 @@ class EndlessRecyclerView : RecyclerView {
         addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                Timber.e("isLoading: $isLoading")
                 if (isLoading) return
                 if (layoutManager !is LinearLayoutManager) return
                 if (adapter == null) return
