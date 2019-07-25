@@ -12,8 +12,4 @@ class MainApplicationModule {
     @Singleton
     @Provides
     fun provideGithubRepository() = GithubRepository()
-
-    @Singleton
-    @Provides
-    fun provideMainFragmentState() = MainFragmentState()
 }

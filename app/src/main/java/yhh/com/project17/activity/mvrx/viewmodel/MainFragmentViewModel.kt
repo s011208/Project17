@@ -20,7 +20,7 @@ class MainFragmentViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(state: MainFragmentState): MainFragmentViewModel
+        fun create(initialState: MainFragmentState): MainFragmentViewModel
     }
 
     companion object : MvRxViewModelFactory<MainFragmentViewModel, MainFragmentState> {
