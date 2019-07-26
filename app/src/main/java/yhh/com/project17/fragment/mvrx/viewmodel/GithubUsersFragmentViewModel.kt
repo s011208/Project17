@@ -9,9 +9,7 @@ import timber.log.Timber
 import yhh.com.project17.external.mvrx.MvRxViewModel
 import yhh.com.project17.fragment.GithubUsersFragment
 import yhh.com.repository.entity.GithubUserEntity
-import yhh.com.repository.entity.GithubUserEntityWrapper
 import yhh.com.repository.repository.GithubRepository
-import java.util.concurrent.TimeUnit
 
 data class GithubUsersFragmentState(
     val dataAsync: Async<List<GithubUserEntity>> = Uninitialized

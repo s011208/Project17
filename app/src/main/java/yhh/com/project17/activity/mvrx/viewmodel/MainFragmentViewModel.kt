@@ -9,7 +9,6 @@ import timber.log.Timber
 import yhh.com.project17.activity.MainFragment
 import yhh.com.project17.external.mvrx.MvRxViewModel
 import yhh.com.repository.repository.GithubRepository
-import java.util.concurrent.TimeUnit
 
 data class MainFragmentState(
     val pageNumberStateAsync: Async<Int> = Uninitialized,
