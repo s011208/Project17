@@ -8,6 +8,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import yhh.com.project17.fragment.githubusers.epoxy.controller.GithubUserEpoxyController
 import yhh.com.repository.entity.GithubUserEntity
 
 @RunWith(RobolectricTestRunner::class)

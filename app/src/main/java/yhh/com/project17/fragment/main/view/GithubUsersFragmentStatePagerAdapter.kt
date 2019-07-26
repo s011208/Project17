@@ -1,10 +1,10 @@
-package yhh.com.project17.activity.view
+package yhh.com.project17.fragment.main.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import yhh.com.project17.fragment.GithubUsersFragment
+import yhh.com.project17.fragment.githubusers.GithubUsersFragment
 
 class GithubUsersFragmentStatePagerAdapter(fragmentManager: FragmentManager) :
     FragmentStatePagerAdapter(fragmentManager) {

@@ -17,6 +17,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import yhh.com.project17.fragment.main.mvrx.viewmodel.MainFragmentState
+import yhh.com.project17.fragment.main.mvrx.viewmodel.MainFragmentViewModel
 import yhh.com.project17.util.TestLifecycleOwner
 import yhh.com.repository.repository.GithubRepository
 import yhh.com.repository.util.RxImmediateSchedulerRule
@@ -46,7 +48,13 @@ class MainFragmentViewModelTest {
 
     @Test
     fun getPageCount_blankKeyword_setToUninitialized() {
-        viewModel = spyk(MainFragmentViewModel(MainFragmentState(pageNumberStateAsync = Success(0)), repository))
+        viewModel = spyk(
+            MainFragmentViewModel(
+                MainFragmentState(
+                    pageNumberStateAsync = Success(0)
+                ), repository
+            )
+        )
 
         viewModel.getPageCount("")
 
@@ -57,7 +65,13 @@ class MainFragmentViewModelTest {
 
     @Test
     fun getPageCount() {
-        viewModel = spyk(MainFragmentViewModel(MainFragmentState(pageNumberStateAsync = Success(0)), repository))
+        viewModel = spyk(
+            MainFragmentViewModel(
+                MainFragmentState(
+                    pageNumberStateAsync = Success(0)
+                ), repository
+            )
+        )
 
         every { repository.getPageCount("s011208", 50) } returns Single.fromCallable { 9987 }
 

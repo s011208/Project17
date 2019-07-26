@@ -16,7 +16,7 @@
 
         <EditText
                 android:singleLine="true"
-                android:hint="@string/activity_main_search_hint"
+                android:hint="@string/fragment_main_search_hint"
                 android:inputType="text"
                 android:id="@+id/search"
                 android:layout_width="match_parent"

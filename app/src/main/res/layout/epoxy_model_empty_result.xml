@@ -6,6 +6,6 @@
           android:gravity="center"
           android:layout_marginTop="8dp"
           android:layout_marginBottom="8dp"
-          android:text="@string/activity_main_search_empty_result"
+          android:text="@string/fragment_github_users_reload_text"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"/>

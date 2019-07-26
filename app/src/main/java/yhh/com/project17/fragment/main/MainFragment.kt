@@ -1,4 +1,4 @@
-package yhh.com.project17.activity
+package yhh.com.project17.fragment.main
 
 import android.content.Context
 import android.os.Bundle
@@ -13,8 +13,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_main.*
 import yhh.com.project17.R
-import yhh.com.project17.activity.mvrx.viewmodel.MainFragmentViewModel
-import yhh.com.project17.activity.view.GithubUsersFragmentStatePagerAdapter
+import yhh.com.project17.fragment.main.mvrx.viewmodel.MainFragmentViewModel
+import yhh.com.project17.fragment.main.view.GithubUsersFragmentStatePagerAdapter
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -58,32 +58,42 @@ class MainFragment : BaseMvRxFragment() {
                 is Loading -> {
                     progressBar.visibility = View.VISIBLE
 
-                    viewPager.adapter = GithubUsersFragmentStatePagerAdapter(fragmentManager!!)
+                    viewPager.adapter =
+                        GithubUsersFragmentStatePagerAdapter(fragmentManager!!)
                     indicator.attachToPager(viewPager)
                 }
                 is Success -> {
                     progressBar.visibility = View.INVISIBLE
 
-                    viewPager.adapter = GithubUsersFragmentStatePagerAdapter(fragmentManager!!)
-                        .apply {
-                            itemPerPage = it.itemPerPage
-                            keyword = it.keyword
-                            itemSize = it.pageNumberStateAsync.invoke()
-                        }
-                    indicator.attachToPager(viewPager)
+                    if (it.pageNumberStateAsync.invoke() == 0) {
+                        Toast.makeText(requireContext(), R.string.fragment_main_empty_result, Toast.LENGTH_LONG)
+                            .show()
+                    } else {
+                        viewPager.adapter = GithubUsersFragmentStatePagerAdapter(
+                            fragmentManager!!
+                        )
+                            .apply {
+                                itemPerPage = it.itemPerPage
+                                keyword = it.keyword
+                                itemSize = it.pageNumberStateAsync.invoke()
+                            }
+                        indicator.attachToPager(viewPager)
+                    }
                 }
                 is Fail -> {
                     progressBar.visibility = View.INVISIBLE
-                    Toast.makeText(requireContext(), R.string.activity_main_search_failed_toast, Toast.LENGTH_LONG)
+                    Toast.makeText(requireContext(), R.string.fragment_main_search_failed, Toast.LENGTH_LONG)
                         .show()
 
-                    viewPager.adapter = GithubUsersFragmentStatePagerAdapter(fragmentManager!!)
+                    viewPager.adapter =
+                        GithubUsersFragmentStatePagerAdapter(fragmentManager!!)
                     indicator.attachToPager(viewPager)
                 }
                 is Uninitialized -> {
                     progressBar.visibility = View.INVISIBLE
 
-                    viewPager.adapter = GithubUsersFragmentStatePagerAdapter(fragmentManager!!)
+                    viewPager.adapter =
+                        GithubUsersFragmentStatePagerAdapter(fragmentManager!!)
                     indicator.attachToPager(viewPager)
                 }
             }

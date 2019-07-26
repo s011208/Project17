@@ -1,4 +1,4 @@
-package yhh.com.project17.fragment.epoxy.model
+package yhh.com.project17.fragment.githubusers.epoxy.model
 
 import android.widget.TextView
 import com.airbnb.epoxy.EpoxyAttribute

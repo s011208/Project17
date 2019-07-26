@@ -1,4 +1,4 @@
-package yhh.com.project17.fragment
+package yhh.com.project17.fragment.githubusers
 
 import android.content.Context
 import android.os.Bundle
@@ -12,8 +12,8 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.plusAssign
 import kotlinx.android.synthetic.main.fragment_github_user.*
 import yhh.com.project17.R
-import yhh.com.project17.fragment.epoxy.controller.GithubUserEpoxyController
-import yhh.com.project17.fragment.mvrx.viewmodel.GithubUsersFragmentViewModel
+import yhh.com.project17.fragment.githubusers.epoxy.controller.GithubUserEpoxyController
+import yhh.com.project17.fragment.githubusers.mvrx.viewmodel.GithubUsersFragmentViewModel
 import yhh.com.project17.util.view.SpacesItemDecoration
 import javax.inject.Inject
 

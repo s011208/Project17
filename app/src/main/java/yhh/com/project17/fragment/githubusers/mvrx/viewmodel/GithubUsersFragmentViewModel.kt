@@ -1,4 +1,4 @@
-package yhh.com.project17.fragment.mvrx.viewmodel
+package yhh.com.project17.fragment.githubusers.mvrx.viewmodel
 
 import com.airbnb.mvrx.*
 import com.squareup.inject.assisted.Assisted
@@ -7,7 +7,7 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import yhh.com.project17.external.mvrx.MvRxViewModel
-import yhh.com.project17.fragment.GithubUsersFragment
+import yhh.com.project17.fragment.githubusers.GithubUsersFragment
 import yhh.com.repository.entity.GithubUserEntity
 import yhh.com.repository.repository.GithubRepository
 

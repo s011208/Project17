@@ -8,6 +8,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
 import yhh.com.project17.R
+import yhh.com.project17.fragment.main.MainFragment
 import javax.inject.Inject
 
 class MainActivity : BaseMvRxActivity(), HasSupportFragmentInjector {
