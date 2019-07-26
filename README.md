@@ -10,3 +10,7 @@ Kotlin + MvRx + Epoxy + RxJava2 + Dagger2 + Glide + Retrofit + Timber + Mockk
 * Use RecyclerView to present search results.
 * Each result item should include user’s avatar and name.
 * Pagination (automatically loading next page)
+
+## References
+* https://developer.github.com/v3/guides/traversing-with-pagination/#constructing-pagination-links
+* https://developer.github.com/v3/search/#search-users
